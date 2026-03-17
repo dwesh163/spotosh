@@ -13,7 +13,6 @@ services:
             - AUTH_SECRET=${AUTH_SECRET}
             - AUTH_GITHUB_ID=${AUTH_GITHUB_ID}
             - AUTH_GITHUB_SECRET=${AUTH_GITHUB_SECRET}
-            - LASTFM_API_KEY=${LASTFM_API_KEY}
         depends_on:
             - server
         restart: unless-stopped
