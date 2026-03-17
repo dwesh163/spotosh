@@ -1,27 +1,32 @@
 # ─── deps ────────────────────────────────────────────────────────────────────
-FROM oven/bun:1-slim AS deps
+FROM node:22-slim AS deps
 WORKDIR /app
-COPY package.json bun.lock* ./
-RUN bun install --frozen-lockfile
+COPY package.json package-lock.json* ./
+RUN npm install
 
 # ─── builder ─────────────────────────────────────────────────────────────────
-FROM oven/bun:1-slim AS builder
+FROM node:22-slim AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
-RUN node node_modules/.bin/next build
+RUN npm run build
 
 # ─── runner ──────────────────────────────────────────────────────────────────
-FROM oven/bun:1-slim AS runner
+FROM node:22-slim AS runner
 WORKDIR /app
+
+RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
+
+# Reuse the node user provided by the node image if possible, but let's stick to explicit creation if needed or reuse 'node'
+# node image usually has a 'node' user (uid 1000). Next.js examples often use a specific one.
+# Let's clean this up to standard nextjs dockerfile with npm.
 
 RUN groupadd --system --gid 1001 nodejs && \
     useradd --system --uid 1001 --gid nodejs nextjs
 
-COPY package.json bun.lock* ./
-RUN bun install --frozen-lockfile --production && \
-    bun pm cache rm
+COPY package.json package-lock.json* ./
+RUN npm install --omit=dev
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
