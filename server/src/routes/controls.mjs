@@ -65,16 +65,16 @@ router.post('/', async (req, res) => {
         break
 
       case 'back': {
-        // > 3s : redémarre la piste en cours
+        // More than 3s in: restart current track
         if (state.progressMs > 3000 && state.mpv?.connected) {
           await state.mpv.seek(0)
           state.progressMs = 0
           broadcast()
           break
         }
-        // sinon : piste précédente
-        state.playedStack.pop()               // retire la piste courante
-        const prev = state.playedStack.pop()  // playItem va la re-pusher
+        // Otherwise: go to previous track
+        state.playedStack.pop()               // remove current track
+        const prev = state.playedStack.pop()  // playItem will re-push it
         if (prev) {
           state.queue.unshift({ ...prev, id: randomUUID(), addedAt: Date.now() })
           advanceQueue()

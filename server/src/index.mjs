@@ -18,4 +18,4 @@ app.use('/queue',    queueRouter)
 app.use('/controls', controlsRouter)
 
 const PORT = process.env.PORT ?? 4000
-app.listen(PORT, () => console.log(`🎵  music-server on :${PORT}`))
+app.listen(PORT, () => console.log(`🎵  server on :${PORT}`))

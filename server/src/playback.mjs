@@ -3,10 +3,10 @@ import { saveHistory, MAX_HISTORY } from './history.mjs'
 import { state, broadcast } from './state.mjs'
 
 /**
- * Options yt-dlp passées à mpv pour éviter les pubs et segments sponsorisés.
- * - sponsorblock-remove : supprime automatiquement les segments via SponsorBlock
+ * yt-dlp options forwarded to mpv to skip ads and sponsored segments.
+ * - sponsorblock-remove: automatically cuts SponsorBlock-marked segments
  *   (sponsor, intro, selfpromo, interaction, preview, music_offtopic)
- * - no-playlist : évite de charger une playlist entière si l'URL en est une
+ * - no-playlist: prevents loading an entire playlist when a playlist URL is matched
  */
 const YTDL_OPTIONS = [
   '--ytdl-format=bestaudio/best',
@@ -36,7 +36,7 @@ export function startProgressTimer(offsetMs = 0) {
         return
       }
     }
-    // Fallback : estimation par timer si IPC pas disponible
+    // Fallback: timer-based estimate when IPC is unavailable
     state.progressMs = offsetMs + (Date.now() - t0)
     broadcast()
   }, 500)
