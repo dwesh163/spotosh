@@ -1,0 +1,29 @@
+services:
+  web:
+    build:
+      context: ./web
+    ports:
+      - "3000:3000"
+    environment:
+      - MUSIC_SERVER_URL=http://server:4000
+    depends_on:
+      - server
+    restart: unless-stopped
+
+  server:
+    build:
+      context: ./server
+    expose:
+      - "4000"
+    volumes:
+      - /run/user/1000/pulse:/run/user/1000/pulse
+      - spotosh-data:/data
+    environment:
+      - DATA_DIR=/data
+      - PORT=4000
+    restart: unless-stopped
+    devices:
+      - /dev/snd:/dev/snd
+
+volumes:
+  spotosh-data:
