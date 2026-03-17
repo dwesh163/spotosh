@@ -40,13 +40,20 @@ jobs:
           fi
 
   build-and-push:
-    name: Build & Push Image
+    name: Build & Push — ${{ matrix.service }}
     runs-on: ubuntu-latest
     needs: [code-quality, detect-version]
     if: needs.detect-version.outputs.skip == 'false'
     permissions:
       contents: read
       packages: write
+    strategy:
+      matrix:
+        include:
+          - service: web
+            context: ./web
+          - service: server
+            context: ./server
     steps:
       - uses: actions/checkout@v4
       - uses: docker/setup-qemu-action@v3
@@ -58,14 +65,14 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - uses: docker/build-push-action@v6
         with:
-          context: ./web
+          context: ${{ matrix.context }}
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}/web:latest
-            ghcr.io/${{ github.repository }}/web:${{ needs.detect-version.outputs.version }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+            ghcr.io/${{ github.repository }}/${{ matrix.service }}:latest
+            ghcr.io/${{ github.repository }}/${{ matrix.service }}:${{ needs.detect-version.outputs.version }}
+          cache-from: type=gha,scope=${{ matrix.service }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.service }}
 
   create-release:
     name: Create Release
