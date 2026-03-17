@@ -1,6 +1,7 @@
 "use client";
 
 import { Volume2, VolumeX } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 type VolumeControlProps = {
   volume: number;
@@ -9,14 +10,19 @@ type VolumeControlProps = {
   onToggleMute: () => void;
 };
 
-export const VolumeControl = ({ volume, muted, onVolumeChange, onToggleMute }: VolumeControlProps) => {
+export const VolumeControl = ({
+  volume,
+  muted,
+  onVolumeChange,
+  onToggleMute,
+}: VolumeControlProps) => {
   const localVolume = muted ? 0 : volume;
 
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-      <button className="btn-icon" style={{ width: 28, height: 28, flexShrink: 0 }} onClick={onToggleMute}>
+    <div className="flex items-center gap-2.5">
+      <Button variant="icon" size="icon-sm" onClick={onToggleMute} className="shrink-0">
         {muted || localVolume === 0 ? <VolumeX size={14} /> : <Volume2 size={14} />}
-      </button>
+      </Button>
       <input
         type="range"
         min={0}

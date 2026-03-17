@@ -1,37 +1,40 @@
 services:
-  web:
-    build:
-      context: ./web
-      target: deps
-    command: bun run dev
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./web:/app
-      - /app/node_modules
-      - /app/.next
-    environment:
-      - NODE_ENV=development
-      - NEXT_TELEMETRY_DISABLED=1
-      - MUSIC_SERVER_URL=http://server:4000
-    depends_on:
-      - server
+    web:
+        image: oven/bun:1
+        working_dir: /app
+        command: sh -c "bun install && bun run dev"
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./web:/app
+            - /app/.next
+        environment:
+            - NODE_ENV=development
+            - NEXT_TELEMETRY_DISABLED=1
+            - MUSIC_SERVER_URL=http://server:4000
+            - AUTH_URL=http://localhost:3000
+            - AUTH_SECRET=${AUTH_SECRET}
+            - AUTH_GITHUB_ID=${AUTH_GITHUB_ID}
+            - AUTH_GITHUB_SECRET=${AUTH_GITHUB_SECRET}
+            - LASTFM_API_KEY=${LASTFM_API_KEY}
+        depends_on:
+            - server
 
-  server:
-    build:
-      context: ./server
-    command: bun --watch src/index.mjs
-    ports:
-      - "4000:4000"
-    volumes:
-      - ./server/src:/app/src
-      - spotosh-data:/data
-      - /run/user/1000/pulse:/run/user/1000/pulse
-    environment:
-      - DATA_DIR=/data
-      - PORT=4000
-    devices:
-      - /dev/snd:/dev/snd
+    server:
+        image: oven/bun:1
+        working_dir: /app
+        command: sh -c "bun install && bun --watch src/index.mjs"
+        ports:
+            - "4000:4000"
+        volumes:
+            - ./server:/app
+            - spotosh-data:/data
+            - /run/user/1000/pulse:/run/user/1000/pulse
+        environment:
+            - DATA_DIR=/data
+            - PORT=4000
+        devices:
+            - /dev/snd:/dev/snd
 
 volumes:
-  spotosh-data:
+    spotosh-data:

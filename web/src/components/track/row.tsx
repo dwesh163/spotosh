@@ -1,62 +1,42 @@
-"use client"
+"use client";
 
-import { Fragment } from "react"
-import Link from "next/link"
-import { Plus, Trash2 } from "lucide-react"
-import { fmtTime } from "@/lib/utils"
-import type { ItunesTrack } from "@/types/music"
+import { Fragment } from "react";
+import Link from "next/link";
+import { Plus, Trash2 } from "lucide-react";
+import { fmtTime } from "@/lib/utils";
+import type { Track } from "@/types/music";
 
 type TrackRowProps = {
-  track: ItunesTrack
-  onAdd: (t: ItunesTrack) => void
-  onRemove?: (t: ItunesTrack) => void
-}
+  track: Track;
+  onAdd: (t: Track) => void;
+  onRemove?: (t: Track) => void;
+};
 
 export const TrackRow = ({ track, onAdd, onRemove }: TrackRowProps) => (
-  <div
-    className="q-row"
-    style={{ display: "flex", alignItems: "center", gap: 12, padding: "9px 10px", borderRadius: 11 }}
-  >
+  <div className="q-row flex items-center gap-3 p-[9px_10px] rounded-[11px]">
     <img
       src={track.artworkUrl100}
       alt={track.collectionName || track.trackName}
-      style={{ width: 40, height: 40, borderRadius: 8, objectFit: "cover", flexShrink: 0 }}
+      className="w-10 h-10 rounded-lg object-cover shrink-0"
     />
-    <div style={{ flex: 1, minWidth: 0 }}>
-      <p
-        style={{
-          fontSize: 13,
-          fontWeight: 600,
-          overflow: "hidden",
-          whiteSpace: "nowrap",
-          textOverflow: "ellipsis",
-        }}
-      >
+    <div className="flex-1 min-w-0">
+      <p className="text-[13px] font-semibold overflow-hidden whitespace-nowrap text-ellipsis">
         {track.trackName}
       </p>
-      <p
-        style={{
-          fontSize: 11,
-          color: "var(--color-muted)",
-          marginTop: 2,
-          overflow: "hidden",
-          whiteSpace: "nowrap",
-          textOverflow: "ellipsis",
-        }}
-      >
+      <p className="text-[11px] text-muted mt-0.5 overflow-hidden whitespace-nowrap text-ellipsis">
         <Link
           href={`/artist/${encodeURIComponent(track.artistName)}`}
-          style={{ color: "inherit", textDecoration: "none", transition: "opacity 0.12s" }}
+          className="text-inherit no-underline hover:opacity-65 transition-opacity"
         >
           {track.artistName}
         </Link>
         {track.collectionName && (
           <Fragment>
             {" "}
-            <span style={{ opacity: 0.4 }}>·</span>{" "}
+            <span className="opacity-40">·</span>{" "}
             <Link
               href={`/album/${encodeURIComponent(track.collectionName)}/${encodeURIComponent(track.artistName)}`}
-              style={{ color: "inherit", textDecoration: "none", opacity: 0.7, transition: "opacity 0.12s" }}
+              className="text-inherit no-underline opacity-70 hover:opacity-45 transition-opacity"
             >
               {track.collectionName}
             </Link>
@@ -64,49 +44,22 @@ export const TrackRow = ({ track, onAdd, onRemove }: TrackRowProps) => (
         )}
       </p>
     </div>
-    <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
-      <span style={{ fontSize: 11, color: "var(--color-muted)", fontFamily: "var(--font-mono)" }}>
-        {fmtTime(track.trackTimeMillis)}
-      </span>
+    <div className="flex items-center gap-1.5 shrink-0">
+      <span className="text-[11px] text-muted font-mono">{fmtTime(track.trackTimeMillis)}</span>
       {onRemove && (
         <button
           onClick={() => onRemove(track)}
-          className="q-remove"
-          style={{
-            width: 24,
-            height: 24,
-            borderRadius: "50%",
-            background: "rgba(255,100,100,0.1)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            border: "none",
-            cursor: "pointer",
-            flexShrink: 0,
-            opacity: 0,
-            transition: "opacity 0.15s",
-          }}
+          className="q-remove w-6 h-6 rounded-full bg-[rgba(255,100,100,0.1)] flex items-center justify-center border-none cursor-pointer shrink-0 opacity-0 transition-opacity"
         >
           <Trash2 size={11} color="#ff6b6b" />
         </button>
       )}
       <button
         onClick={() => onAdd(track)}
-        style={{
-          width: 24,
-          height: 24,
-          borderRadius: "50%",
-          background: "rgba(181,255,71,0.12)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          border: "none",
-          cursor: "pointer",
-          flexShrink: 0,
-        }}
+        className="w-6 h-6 rounded-full bg-[rgba(181,255,71,0.12)] flex items-center justify-center border-none cursor-pointer shrink-0"
       >
         <Plus size={12} color="var(--color-accent)" />
       </button>
     </div>
   </div>
-)
+);

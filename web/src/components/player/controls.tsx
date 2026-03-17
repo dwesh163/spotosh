@@ -1,6 +1,8 @@
 "use client";
 
 import { Pause, Play, SkipBack, SkipForward } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import type { QueueItem } from "@/types/music";
 
 type PlayerControlsProps = {
@@ -11,27 +13,31 @@ type PlayerControlsProps = {
   onSkipNext: () => void;
 };
 
-export const PlayerControls = ({ nowPlaying, isPlaying, onTogglePlay, onSkipBack, onSkipNext }: PlayerControlsProps) => (
-  <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10 }}>
-    <button className="btn-icon" style={{ width: 40, height: 40 }} onClick={onSkipBack} disabled={!nowPlaying}>
+export const PlayerControls = ({
+  nowPlaying,
+  isPlaying,
+  onTogglePlay,
+  onSkipBack,
+  onSkipNext,
+}: PlayerControlsProps) => (
+  <div className="flex items-center justify-center gap-2.5">
+    <Button variant="icon" size="icon" onClick={onSkipBack} disabled={!nowPlaying}>
       <SkipBack size={20} />
-    </button>
+    </Button>
     <button
       onClick={onTogglePlay}
       disabled={!nowPlaying}
-      style={{
-        width: 54, height: 54, borderRadius: "50%", border: "none",
-        background: nowPlaying ? "var(--color-accent)" : "var(--color-muted-2)",
-        color: nowPlaying ? "#000" : "var(--color-muted)",
-        cursor: nowPlaying ? "pointer" : "not-allowed",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        transition: "transform 0.1s, background 0.2s", flexShrink: 0,
-      }}
+      className={cn(
+        "w-[54px] h-[54px] rounded-full border-none flex items-center justify-center shrink-0 transition-transform active:scale-95",
+        nowPlaying
+          ? "bg-accent text-black cursor-pointer hover:opacity-90"
+          : "bg-muted-2 text-muted cursor-not-allowed"
+      )}
     >
-      {isPlaying ? <Pause size={20} /> : <Play size={20} style={{ marginLeft: 2 }} />}
+      {isPlaying ? <Pause size={20} /> : <Play size={20} className="ml-0.5" />}
     </button>
-    <button className="btn-icon" style={{ width: 40, height: 40 }} onClick={onSkipNext}>
+    <Button variant="icon" size="icon" onClick={onSkipNext}>
       <SkipForward size={20} />
-    </button>
+    </Button>
   </div>
 );

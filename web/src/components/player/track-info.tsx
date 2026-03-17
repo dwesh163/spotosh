@@ -1,60 +1,40 @@
-"use client"
+"use client";
 
-import { Fragment } from "react"
-import Link from "next/link"
-import type { QueueItem } from "@/types/music"
+import { Fragment } from "react";
+import Link from "next/link";
+import type { QueueItem } from "@/types/music";
 
 type TrackInfoProps = {
-  nowPlaying: QueueItem | null
-}
+  nowPlaying: QueueItem | null;
+};
 
 export const TrackInfo = ({ nowPlaying }: TrackInfoProps) => {
-  if (!nowPlaying) return (
-    <div style={{ minHeight: 48 }}>
-      <div style={{ height: 18, width: "65%", background: "var(--color-muted-2)", borderRadius: 5, marginBottom: 8 }} />
-      <div style={{ height: 13, width: "42%", background: "var(--color-muted-2)", borderRadius: 5 }} />
-    </div>
-  )
-
-  const linkStyle: React.CSSProperties = {
-    color: "inherit",
-    textDecoration: "none",
-    transition: "opacity 0.1s",
-  }
+  if (!nowPlaying)
+    return (
+      <div className="min-h-12">
+        <div className="h-[18px] w-[65%] bg-muted-2 rounded-[5px] mb-2" />
+        <div className="h-[13px] w-[42%] bg-muted-2 rounded-[5px]" />
+      </div>
+    );
 
   return (
-    <div style={{ minHeight: 48, animation: "fade-up 0.3s ease forwards" }}>
-      <p
-        style={{
-          fontSize: 19,
-          fontWeight: 800,
-          marginBottom: 4,
-          lineHeight: 1.2,
-          overflow: "hidden",
-          whiteSpace: "nowrap",
-          textOverflow: "ellipsis",
-        }}
-      >
+    <div className="min-h-12 animate-fade-up">
+      <p className="text-[19px] font-extrabold mb-1 leading-[1.2] overflow-hidden whitespace-nowrap text-ellipsis">
         {nowPlaying.title}
       </p>
-      <p
-        style={{
-          fontSize: 13,
-          color: "var(--color-muted)",
-          overflow: "hidden",
-          whiteSpace: "nowrap",
-          textOverflow: "ellipsis",
-        }}
-      >
-        <Link href={`/artist/${encodeURIComponent(nowPlaying.artist)}`} style={linkStyle}>
+      <p className="text-[13px] text-muted overflow-hidden whitespace-nowrap text-ellipsis">
+        <Link
+          href={`/artist/${encodeURIComponent(nowPlaying.artist)}`}
+          className="text-inherit no-underline hover:opacity-70 transition-opacity"
+        >
           {nowPlaying.artist}
         </Link>
         {nowPlaying.album && (
           <Fragment>
-            <span style={{ opacity: 0.5 }}> · </span>
+            <span className="opacity-50"> · </span>
             <Link
               href={`/album/${encodeURIComponent(nowPlaying.album)}/${encodeURIComponent(nowPlaying.artist)}`}
-              style={{ ...linkStyle, opacity: 0.65 }}
+              className="text-inherit no-underline opacity-65 hover:opacity-45 transition-opacity"
             >
               {nowPlaying.album}
             </Link>
@@ -62,5 +42,5 @@ export const TrackInfo = ({ nowPlaying }: TrackInfoProps) => {
         )}
       </p>
     </div>
-  )
-}
+  );
+};

@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import { Clock, Plus, Trash2 } from "lucide-react"
-import { Fragment, useCallback, useState } from "react"
-import { addToQueue, removeFromHistory } from "@/services/music"
-import { fmtTime, timeAgo } from "@/lib/utils"
-import type { HistoryItem } from "@/types/music"
+import { Clock, Plus, Trash2 } from "lucide-react";
+import { Fragment, useCallback, useState } from "react";
+import { addToQueue, removeFromHistory } from "@/services/music";
+import { fmtTime, timeAgo } from "@/lib/utils";
+import type { HistoryItem } from "@/types/music";
 
 type HistoryListProps = {
-  initialHistory: HistoryItem[]
-}
+  initialHistory: HistoryItem[];
+};
 
 export const HistoryList = ({ initialHistory }: HistoryListProps) => {
-  const [history, setHistory] = useState(initialHistory)
+  const [history, setHistory] = useState(initialHistory);
 
   const handleAddToQueue = useCallback(async (item: HistoryItem) => {
     await addToQueue({
@@ -21,126 +21,54 @@ export const HistoryList = ({ initialHistory }: HistoryListProps) => {
       album: item.album,
       artwork: item.artwork,
       durationMs: item.durationMs,
-    })
-  }, [])
+    });
+  }, []);
 
   const handleRemoveFromHistory = useCallback(async (id: string) => {
-    await removeFromHistory(id)
-    setHistory((prev) => prev.filter((h) => h.id !== id))
-  }, [])
+    await removeFromHistory(id);
+    setHistory((prev) => prev.filter((h) => h.id !== id));
+  }, []);
 
-  if (history.length === 0) return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 12,
-        padding: "60px 0",
-        color: "var(--color-muted)",
-      }}
-    >
-      <Clock size={38} strokeWidth={1} />
-      <p style={{ fontSize: 14 }}>No history yet</p>
-    </div>
-  )
+  if (history.length === 0)
+    return (
+      <div className="flex flex-col items-center gap-3 py-16 text-muted">
+        <Clock size={38} strokeWidth={1} />
+        <p className="text-sm">No history yet</p>
+      </div>
+    );
 
   return (
     <div>
       {history.map((item, i) => (
         <Fragment key={`${item.trackId}-${i}`}>
-          <div
-            style={{ display: "flex", alignItems: "center", gap: 8, borderRadius: 11 }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.06)" }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = "none" }}
-          >
+          <div className="flex items-center gap-2 rounded-[11px] group hover:bg-white/[0.06] transition-colors">
             <button
               onClick={() => handleAddToQueue(item)}
-              style={{
-                flex: 1,
-                display: "flex",
-                alignItems: "center",
-                gap: 12,
-                padding: "9px 10px",
-                borderRadius: 11,
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                textAlign: "left",
-                color: "var(--color-text)",
-                fontFamily: "var(--font-display)",
-                minWidth: 0,
-              }}
+              className="flex-1 flex items-center gap-3 p-[9px_10px] rounded-[11px] bg-transparent border-none cursor-pointer text-left text-foreground font-display min-w-0"
             >
               <img
                 src={item.artwork}
                 alt={item.album}
-                style={{ width: 40, height: 40, borderRadius: 8, objectFit: "cover", flexShrink: 0 }}
+                className="w-10 h-10 rounded-lg object-cover shrink-0"
               />
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <p
-                  style={{
-                    fontSize: 13,
-                    fontWeight: 600,
-                    overflow: "hidden",
-                    whiteSpace: "nowrap",
-                    textOverflow: "ellipsis",
-                  }}
-                >
+              <div className="flex-1 min-w-0">
+                <p className="text-[13px] font-semibold overflow-hidden whitespace-nowrap text-ellipsis">
                   {item.title}
                 </p>
-                <p
-                  style={{
-                    fontSize: 11,
-                    color: "var(--color-muted)",
-                    marginTop: 2,
-                    overflow: "hidden",
-                    whiteSpace: "nowrap",
-                    textOverflow: "ellipsis",
-                  }}
-                >
+                <p className="text-[11px] text-muted mt-0.5 overflow-hidden whitespace-nowrap text-ellipsis">
                   {item.artist}
                 </p>
               </div>
-              <div style={{ flexShrink: 0, textAlign: "right" }}>
-                <p style={{ fontSize: 10, color: "var(--color-muted)", fontFamily: "var(--font-mono)" }}>
-                  {timeAgo(item.playedAt)}
-                </p>
-                <div
-                  style={{
-                    marginTop: 4,
-                    width: 24,
-                    height: 24,
-                    borderRadius: "50%",
-                    background: "rgba(181,255,71,0.12)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginLeft: "auto",
-                  }}
-                >
+              <div className="shrink-0 text-right">
+                <p className="text-[10px] text-muted font-mono">{timeAgo(item.playedAt)}</p>
+                <div className="mt-1 w-6 h-6 rounded-full bg-[rgba(181,255,71,0.12)] flex items-center justify-center ml-auto">
                   <Plus size={12} color="var(--color-accent)" />
                 </div>
               </div>
             </button>
             <button
               onClick={() => handleRemoveFromHistory(item.id)}
-              style={{
-                flexShrink: 0,
-                width: 28,
-                height: 28,
-                borderRadius: 8,
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "var(--color-muted)",
-                marginRight: 4,
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.color = "#ff5555" }}
-              onMouseLeave={(e) => { e.currentTarget.style.color = "var(--color-muted)" }}
+              className="shrink-0 w-7 h-7 rounded-lg bg-transparent border-none cursor-pointer flex items-center justify-center text-muted mr-1 hover:text-[#ff5555] transition-colors"
             >
               <Trash2 size={14} />
             </button>
@@ -148,5 +76,5 @@ export const HistoryList = ({ initialHistory }: HistoryListProps) => {
         </Fragment>
       ))}
     </div>
-  )
-}
+  );
+};

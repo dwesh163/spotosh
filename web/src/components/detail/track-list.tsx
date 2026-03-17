@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import { useCallback } from "react"
-import { TrackRow } from "@/components/track/row"
-import { addToQueue } from "@/services/music"
-import type { ItunesTrack } from "@/types/music"
+import { useCallback } from "react";
+import { TrackRow } from "@/components/track/row";
+import { addToQueue } from "@/services/music";
+import type { Track } from "@/types/music";
 
 type TrackListProps = {
-  tracks: ItunesTrack[]
-}
+  tracks: Track[];
+};
 
 export const TrackList = ({ tracks }: TrackListProps) => {
-  const handleAdd = useCallback(async (track: ItunesTrack) => {
+  const handleAdd = useCallback(async (track: Track) => {
     await addToQueue({
       trackId: track.trackId,
       title: track.trackName,
@@ -18,29 +18,21 @@ export const TrackList = ({ tracks }: TrackListProps) => {
       album: track.collectionName ?? "",
       artwork: track.artworkUrl100 ?? "",
       durationMs: track.trackTimeMillis ?? 0,
-    })
-  }, [])
+    });
+  }, []);
 
-  if (tracks.length === 0) return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 12,
-        padding: "60px 0",
-        color: "var(--color-muted)",
-      }}
-    >
-      <p style={{ fontSize: 14 }}>No tracks found</p>
-    </div>
-  )
+  if (tracks.length === 0)
+    return (
+      <div className="flex flex-col items-center gap-3 py-16 text-muted">
+        <p className="text-sm">No tracks found</p>
+      </div>
+    );
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
+    <div className="flex flex-col gap-px">
       {tracks.map((track) => (
         <TrackRow key={track.trackId} track={track} onAdd={handleAdd} />
       ))}
     </div>
-  )
-}
+  );
+};

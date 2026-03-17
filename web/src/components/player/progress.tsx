@@ -16,27 +16,15 @@ export const Progress = ({ nowPlaying, progressMs, onSeek }: ProgressProps) => {
     <div>
       <div
         onClick={onSeek}
-        style={{
-          height: 6, borderRadius: 3, background: "var(--color-muted-2)",
-          overflow: "hidden", opacity: nowPlaying ? 1 : 0.3,
-          cursor: nowPlaying ? "pointer" : "default",
-        }}
+        className="h-1.5 rounded-[3px] bg-muted-2 overflow-hidden"
+        style={{ opacity: nowPlaying ? 1 : 0.3, cursor: nowPlaying ? "pointer" : "default" }}
       >
         <div
-          style={{
-            height: "100%", width: `${progress * 100}%`,
-            background: "var(--color-accent)", borderRadius: 3,
-            transition: "width 0.4s linear",
-          }}
+          className="h-full bg-accent rounded-[3px] transition-[width] duration-400"
+          style={{ width: `${progress * 100}%` }}
         />
       </div>
-      <div
-        style={{
-          display: "flex", justifyContent: "space-between",
-          fontSize: 11, color: "var(--color-muted)",
-          fontFamily: "var(--font-mono)", marginTop: 5,
-        }}
-      >
+      <div className="flex justify-between text-[11px] text-muted font-mono mt-[5px]">
         <span>{fmtTime(progressMs)}</span>
         <span>{fmtTime(nowPlaying?.durationMs ?? 0)}</span>
       </div>
