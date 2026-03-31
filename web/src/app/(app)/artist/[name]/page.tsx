@@ -28,8 +28,10 @@ export default async function ArtistPage({ params }: Props) {
                 <Music2 size={18} className="text-muted" />
             </div>
 
-            <div className="flex-1 overflow-y-auto px-6 py-3.5">
-                <TrackList tracks={tracks} />
+            <div className="flex-1 overflow-y-auto">
+                <div className="px-6 py-4">
+                    <TrackList tracks={tracks} />
+                </div>
             </div>
         </div>
     );

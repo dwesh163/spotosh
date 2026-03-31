@@ -1,153 +1,163 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: "Syne", sans-serif;
-  --font-mono: "Space Mono", monospace;
+    --font-display: "Syne", sans-serif;
+    --font-mono: "Space Mono", monospace;
 
-  --color-bg: #111116;
-  --color-surface: #17171d;
-  --color-card: #1e1e26;
-  --color-outline: #2a2a36;
-  --color-accent: #b5ff47;
-  --color-foreground: #f4f4f8;
-  --color-muted: #7a7a90;
-  --color-muted-2: #2e2e3a;
-  --color-muted-3: #222230;
+    --color-bg: #111116;
+    --color-surface: #17171d;
+    --color-card: #1e1e26;
+    --color-outline: #2a2a36;
+    --color-accent: #b5ff47;
+    --color-foreground: #f4f4f8;
+    --color-muted: #7a7a90;
+    --color-muted-2: #2e2e3a;
+    --color-muted-3: #222230;
 
-  --animate-fade-up: fade-up 0.3s ease forwards;
-  --animate-pop-in: pop-in 0.3s ease forwards;
-  --animate-slide-right: slide-right 0.25s ease forwards;
-  --animate-spin-slow: spin 1s linear infinite;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+    --animate-fade-up: fade-up 0.3s ease forwards;
+    --animate-pop-in: pop-in 0.3s ease forwards;
+    --animate-slide-right: slide-right 0.25s ease forwards;
+    --animate-spin-slow: spin 1s linear infinite;
 }
 
 html,
 body {
-  height: 100%;
-  overflow: hidden;
-  background: var(--color-bg);
-  color: var(--color-foreground);
-  font-family: var(--font-display);
-  -webkit-font-smoothing: antialiased;
+    height: 100%;
+    overflow: hidden;
+    background: var(--color-bg);
+    color: var(--color-foreground);
+    font-family: var(--font-display);
+    -webkit-font-smoothing: antialiased;
 }
 
 ::-webkit-scrollbar {
-  width: 3px;
+    width: 3px;
 }
+
 ::-webkit-scrollbar-track {
-  background: transparent;
+    background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
-  background: var(--color-muted-2);
-  border-radius: 2px;
+    background: var(--color-muted-2);
+    border-radius: 2px;
 }
 
 @keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes slide-right {
-  from {
-    opacity: 0;
-    transform: translateX(-6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+    from {
+        opacity: 0;
+        transform: translateX(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 @keyframes pop-in {
-  0% {
-    opacity: 0;
-    transform: scale(0.94);
-  }
-  60% {
-    transform: scale(1.03);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
+    0% {
+        opacity: 0;
+        transform: scale(0.94);
+    }
+
+    60% {
+        transform: scale(1.03);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 @keyframes eq1 {
-  0%,
-  100% {
-    height: 5px;
-  }
-  50% {
-    height: 16px;
-  }
+
+    0%,
+    100% {
+        height: 5px;
+    }
+
+    50% {
+        height: 16px;
+    }
 }
+
 @keyframes eq2 {
-  0%,
-  100% {
-    height: 14px;
-  }
-  50% {
-    height: 5px;
-  }
+
+    0%,
+    100% {
+        height: 14px;
+    }
+
+    50% {
+        height: 5px;
+    }
 }
+
 @keyframes eq3 {
-  0%,
-  100% {
-    height: 8px;
-  }
-  50% {
-    height: 20px;
-  }
+
+    0%,
+    100% {
+        height: 8px;
+    }
+
+    50% {
+        height: 20px;
+    }
 }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .range-input {
-  appearance: none;
-  width: 100%;
-  height: 3px;
-  background: var(--color-muted-2);
-  border-radius: 2px;
-  cursor: pointer;
-  outline: none;
-  transition: height 0.12s;
+    appearance: none;
+    width: 100%;
+    height: 3px;
+    background: var(--color-muted-2);
+    border-radius: 2px;
+    cursor: pointer;
+    outline: none;
+    transition: height 0.12s;
 }
+
 .range-input:hover {
-  height: 5px;
+    height: 5px;
 }
+
 .range-input::-webkit-slider-thumb {
-  appearance: none;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--color-accent);
-  cursor: pointer;
-  transition: transform 0.12s;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    cursor: pointer;
+    transition: transform 0.12s;
 }
+
 .range-input::-webkit-slider-thumb:hover {
-  transform: scale(1.4);
+    transform: scale(1.4);
 }
 
 .q-row:hover {
-  background: rgba(255, 255, 255, 0.06) !important;
+    background: rgba(255, 255, 255, 0.06) !important;
 }
+
 .q-row:hover .q-remove {
-  opacity: 1 !important;
+    opacity: 1 !important;
 }

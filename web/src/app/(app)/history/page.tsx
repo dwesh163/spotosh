@@ -23,8 +23,10 @@ export default async function HistoryPage() {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-6 py-3.5">
-        <HistoryList initialHistory={history} />
+      <div className="flex-1 overflow-y-auto">
+        <div className="px-6 py-4">
+          <HistoryList initialHistory={history} />
+        </div>
       </div>
     </div>
   );
