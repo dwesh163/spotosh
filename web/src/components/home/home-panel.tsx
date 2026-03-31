@@ -99,7 +99,7 @@ export const HomePanel = () => {
                     </div>
 
                     {showResults && results.length > 0 && (
-                        <div className="absolute top-[calc(100%+8px)] left-0 right-0 bg-surface border border-outline rounded-[14px] overflow-hidden z-50 shadow-[0_24px_48px_rgba(0,0,0,0.75)] max-h-[340px] overflow-y-auto animate-fade-up">
+                        <div onMouseDown={(e) => e.preventDefault()} className="absolute top-[calc(100%+8px)] left-0 right-0 bg-surface border border-outline rounded-[14px] overflow-hidden z-50 shadow-[0_24px_48px_rgba(0,0,0,0.75)] max-h-[340px] overflow-y-auto animate-fade-up">
                             {results.map((track) => (
                                 <TrackRow key={track.trackId} track={track} onAdd={handleAdd} />
                             ))}
