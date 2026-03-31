@@ -41,6 +41,17 @@ router.post('/', (req, res) => {
   res.status(201).json(item)
 })
 
+router.patch('/reorder', (req, res) => {
+  const { ids } = req.body
+  if (!Array.isArray(ids)) return res.status(400).json({ error: 'ids must be an array' })
+  const map = new Map(state.queue.map(item => [item.id, item]))
+  const reordered = ids.map(id => map.get(id)).filter(Boolean)
+  const missing = state.queue.filter(item => !ids.includes(item.id))
+  state.queue = [...reordered, ...missing]
+  broadcast()
+  res.status(200).json({ ok: true })
+})
+
 router.delete('/:id', (req, res) => {
   const before = state.queue.length
   state.queue = state.queue.filter(i => i.id !== req.params.id)

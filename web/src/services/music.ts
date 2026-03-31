@@ -29,6 +29,14 @@ export const addToQueue = async (input: AddToQueueInput) => {
   });
 };
 
+export const reorderQueue = async (ids: string[]) => {
+  await fetch(`${MUSIC_SERVER_URL}/queue/reorder`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ids }),
+  });
+};
+
 export const removeFromQueue = async (id: string) => {
   await fetch(`${MUSIC_SERVER_URL}/queue/${id}`, { method: "DELETE" });
 };
