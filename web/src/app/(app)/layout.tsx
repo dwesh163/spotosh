@@ -1,8 +1,9 @@
-import { Disc3, History, LogOut } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
-import { auth, signOut } from "@/services/auth";
+import { Disc3, History, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LeftPanel } from "@/components/player/left-panel";
+import { auth, signOut } from "@/services/auth";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
@@ -25,10 +26,12 @@ export default async function AppLayout({ children }: { children: React.ReactNod
           </Button>
 
           {session?.user?.image && (
-            <img
+            <Image
               src={session.user.image}
               alt={session.user.name ?? "User"}
-              className="w-7 h-7 rounded-full object-cover"
+              width={28}
+              height={28}
+              className="rounded-full object-cover"
             />
           )}
 

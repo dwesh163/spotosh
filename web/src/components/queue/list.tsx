@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Fragment, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Clock, GripVertical, ListMusic, X } from "lucide-react";
@@ -91,7 +92,7 @@ export const QueueList = ({ state, onRemoveFromQueue }: QueueListProps) => {
             onDragOver={(e) => onDragOver(e, i)}
             onDrop={(e) => onDrop(e, i)}
             onDragEnd={onDragEnd}
-            className="q-row flex items-center gap-3 p-[9px_10px] rounded-[11px] transition-colors"
+            className="q-row group flex items-center gap-3 p-[9px_10px] rounded-[11px] transition-colors"
             style={
               dragging
                 ? {
@@ -108,12 +109,14 @@ export const QueueList = ({ state, onRemoveFromQueue }: QueueListProps) => {
           >
             <GripVertical
               size={13}
-              className="text-muted opacity-0 q-remove cursor-grab shrink-0"
+              className="text-muted opacity-0 group-hover:opacity-100 transition-opacity cursor-grab shrink-0"
             />
-            <img
+            <Image
               src={item.artwork}
               alt={item.album}
-              className="w-10 h-10 rounded-lg object-cover shrink-0"
+              width={40}
+              height={40}
+              className="rounded-lg object-cover shrink-0"
             />
             <div className="flex-1 min-w-0">
               <p className="text-[13px] font-semibold overflow-hidden whitespace-nowrap text-ellipsis">
@@ -146,7 +149,7 @@ export const QueueList = ({ state, onRemoveFromQueue }: QueueListProps) => {
                 variant="icon"
                 size="icon-sm"
                 onClick={() => onRemoveFromQueue(item.id)}
-                className="q-remove opacity-0 transition-opacity"
+                className="opacity-0 group-hover:opacity-100 transition-opacity"
               >
                 <X size={12} />
               </Button>

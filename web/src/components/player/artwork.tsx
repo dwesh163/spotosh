@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Fragment } from "react";
 import { Disc3 } from "lucide-react";
 import { bigArt } from "@/lib/utils";
@@ -21,10 +22,11 @@ export const Artwork = ({ nowPlaying, isPlaying }: ArtworkProps) => (
             opacity: 0.45,
           }}
         />
-        <img
+        <Image
           src={bigArt(nowPlaying.artwork)}
           alt={nowPlaying.album}
-          className="relative w-full h-full object-cover animate-pop-in"
+          fill
+          className="object-cover animate-pop-in"
         />
       </Fragment>
     ) : (

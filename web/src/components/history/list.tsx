@@ -1,9 +1,10 @@
 "use client";
 
-import { Clock, Plus, Trash2 } from "lucide-react";
+import Image from "next/image";
 import { Fragment, useCallback, useState } from "react";
-import { addToQueue, removeFromHistory } from "@/services/music";
+import { Clock, Plus, Trash2 } from "lucide-react";
 import { fmtTime, timeAgo } from "@/lib/utils";
+import { addToQueue, removeFromHistory } from "@/services/music";
 import type { HistoryItem } from "@/types/music";
 
 type HistoryListProps = {
@@ -43,13 +44,16 @@ export const HistoryList = ({ initialHistory }: HistoryListProps) => {
         <Fragment key={`${item.trackId}-${i}`}>
           <div className="flex items-center gap-2 rounded-[11px] group hover:bg-white/[0.06] transition-colors">
             <button
+              type="button"
               onClick={() => handleAddToQueue(item)}
               className="flex-1 flex items-center gap-3 p-[9px_10px] rounded-[11px] bg-transparent border-none cursor-pointer text-left text-foreground font-display min-w-0"
             >
-              <img
+              <Image
                 src={item.artwork}
                 alt={item.album}
-                className="w-10 h-10 rounded-lg object-cover shrink-0"
+                width={40}
+                height={40}
+                className="rounded-lg object-cover shrink-0"
               />
               <div className="flex-1 min-w-0">
                 <p className="text-[13px] font-semibold overflow-hidden whitespace-nowrap text-ellipsis">
@@ -67,6 +71,7 @@ export const HistoryList = ({ initialHistory }: HistoryListProps) => {
               </div>
             </button>
             <button
+              type="button"
               onClick={() => handleRemoveFromHistory(item.id)}
               className="shrink-0 w-7 h-7 rounded-lg bg-transparent border-none cursor-pointer flex items-center justify-center text-muted mr-1 hover:text-[#ff5555] transition-colors"
             >

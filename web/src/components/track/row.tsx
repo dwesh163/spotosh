@@ -23,7 +23,7 @@ export const TrackRow = ({ track, onAdd, onRemove }: TrackRowProps) => {
   };
 
   return (
-    <div className="q-row flex items-center gap-3 p-[9px_10px] rounded-[11px]">
+    <div className="q-row group flex items-center gap-3 p-[9px_10px] rounded-[11px]">
       <img
         src={track.artworkUrl100}
         alt={track.collectionName || track.trackName}

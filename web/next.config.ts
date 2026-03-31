@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
       { hostname: "is3-ssl.mzstatic.com" },
       { hostname: "is4-ssl.mzstatic.com" },
       { hostname: "is5-ssl.mzstatic.com" },
+      { hostname: "e-cdns-images.dzcdn.net" },
+      { hostname: "cdn-images.dzcdn.net" },
+      { hostname: "avatars.githubusercontent.com" },
+      { hostname: "lastfm.freetls.fastly.net" },
     ],
   },
 };
