@@ -1,4 +1,5 @@
 import type { Track } from "@/types/music";
+import { getTrackCover } from "@/services/deezer";
 
 const API_KEY = process.env.LASTFM_API_KEY ?? "";
 const BASE = "https://ws.audioscrobbler.com/2.0/";
@@ -16,7 +17,10 @@ const lfm = async (params: Record<string, string>): Promise<unknown> => {
     for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
     url.searchParams.set("api_key", API_KEY);
     url.searchParams.set("format", "json");
-    const res = await fetch(url.toString(), { next: { revalidate: 60 } });
+    const res = await fetch(url.toString(), {
+        next: { revalidate: 60 },
+        signal: AbortSignal.timeout(8000),
+    });
     return res.json();
 };
 
@@ -46,7 +50,11 @@ export const getSimilarTracks = async (artist: string, track: string): Promise<T
         };
         const tracks = data?.similartracks?.track ?? [];
         if (!Array.isArray(tracks)) return [];
-        return tracks.slice(0, 10).map((t) => toTrack(t));
+        const base = tracks.slice(0, 10).map((t) => toTrack(t));
+        const covers = await Promise.all(
+            base.map((t) => getTrackCover(t.artistName, t.trackName))
+        );
+        return base.map((t, i) => covers[i] ? { ...t, artworkUrl100: covers[i] } : t);
     } catch {
         return [];
     }

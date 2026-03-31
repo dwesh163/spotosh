@@ -65,6 +65,17 @@ export const getArtistTracks = async (artist: string): Promise<Track[]> => {
     }
 };
 
+export const getTrackCover = async (artist: string, track: string): Promise<string> => {
+    try {
+        const data = (await deezer("/search", { q: `${artist} ${track}`, limit: "1" })) as {
+            data?: DeezerTrack[];
+        };
+        return data?.data?.[0]?.album?.cover_big ?? "";
+    } catch {
+        return "";
+    }
+};
+
 export const getAlbumTracks = async (album: string, artist: string): Promise<Track[]> => {
     try {
         const search = (await deezer("/search/album", { q: `${artist} ${album}`, limit: "1" })) as {
