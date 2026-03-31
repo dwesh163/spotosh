@@ -38,7 +38,7 @@ export const QueueList = ({ state, onRemoveFromQueue }: QueueListProps) => {
     const from = dragIndex.current;
     if (from === null || from === dropI) {
       setDragOver(null);
-      isDragging.current = false;
+      setDragging(false);
       return;
     }
     const next = [...items];
