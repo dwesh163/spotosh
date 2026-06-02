@@ -1,4 +1,4 @@
-FROM node:22-slim
+FROM oven/bun:1
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     mpv alsa-utils ffmpeg python3 python3-pip curl && \
@@ -6,9 +6,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm ci
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile
 COPY . .
 
 EXPOSE 4000
-CMD ["npm", "start"]
+CMD ["node", "src/index.mjs"]

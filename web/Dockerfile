@@ -1,16 +1,16 @@
 # ─── deps ────────────────────────────────────────────────────────────────────
-FROM node:22-slim AS deps
+FROM oven/bun:1 AS deps
 WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm ci
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile
 
 # ─── builder ─────────────────────────────────────────────────────────────────
-FROM node:22-slim AS builder
+FROM oven/bun:1 AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
-RUN npm run build
+RUN bun run build
 
 # ─── runner ──────────────────────────────────────────────────────────────────
 FROM node:22-slim AS runner
