@@ -37,7 +37,7 @@ export type HistoryItem = QueueItem & {
 export type GenrePreset = {
     label: string;
     genreId?: number;
-    query?: string;
+    playlistId?: number;
 };
 
 export type MobileTab = "player" | "queue";
