@@ -47,11 +47,11 @@ export const HomePanel = () => {
 
     const handleRemoveFromQueue = useCallback((id: string) => removeFromQueue(id), []);
 
-    const addGenreToQueue = useCallback(async (preset: { genreId?: number; query?: string }) => {
+    const addGenreToQueue = useCallback(async (preset: { genreId?: number; playlistId?: number }) => {
         try {
             const url = preset.genreId != null
                 ? `/api/genre?id=${preset.genreId}`
-                : `/api/search?q=${encodeURIComponent(preset.query ?? "")}`;
+                : `/api/playlist?id=${preset.playlistId}`;
             const res = await fetch(url);
             const tracks: Track[] = await res.json();
             await Promise.all(
