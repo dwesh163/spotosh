@@ -47,9 +47,12 @@ export const HomePanel = () => {
 
     const handleRemoveFromQueue = useCallback((id: string) => removeFromQueue(id), []);
 
-    const addGenreToQueue = useCallback(async (genreQuery: string) => {
+    const addGenreToQueue = useCallback(async (preset: { genreId?: number; query?: string }) => {
         try {
-            const res = await fetch(`/api/search?q=${encodeURIComponent(genreQuery)}`);
+            const url = preset.genreId != null
+                ? `/api/genre?id=${preset.genreId}`
+                : `/api/search?q=${encodeURIComponent(preset.query ?? "")}`;
+            const res = await fetch(url);
             const tracks: Track[] = await res.json();
             await Promise.all(
                 tracks.slice(0, 8).map((track) =>
@@ -109,7 +112,7 @@ export const HomePanel = () => {
             </div>
 
             <div className="flex-1 overflow-y-auto px-6 py-3.5">
-                <GenreChips onSelect={addGenreToQueue} />
+                <GenreChips onSelect={(preset) => addGenreToQueue(preset)} />
                 <QueueList state={state} onRemoveFromQueue={handleRemoveFromQueue} />
 
                 {(recommendations.length > 0 || recsLoading) && (

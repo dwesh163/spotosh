@@ -60,7 +60,7 @@ export const TrackRow = ({ track, onAdd, onRemove }: TrackRowProps) => {
           <button
             type="button"
             onClick={() => onRemove(track)}
-            className="q-remove w-6 h-6 rounded-full bg-[rgba(255,100,100,0.1)] flex items-center justify-center border-none cursor-pointer shrink-0 opacity-0 transition-opacity"
+            className="w-6 h-6 rounded-full bg-[rgba(255,100,100,0.1)] flex items-center justify-center border-none cursor-pointer shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
           >
             <Trash2 size={11} color="#ff6b6b" />
           </button>

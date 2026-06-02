@@ -155,9 +155,5 @@ body {
 }
 
 .q-row:hover {
-    background: rgba(255, 255, 255, 0.06) !important;
-}
-
-.q-row:hover .q-remove {
-    opacity: 1 !important;
+    background: rgba(255, 255, 255, 0.06);
 }
