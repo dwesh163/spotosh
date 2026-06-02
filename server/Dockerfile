@@ -1,14 +1,13 @@
 FROM node:22-slim
 
-# mpv + yt-dlp for full-track streaming from YouTube
 RUN apt-get update && apt-get install -y --no-install-recommends \
     mpv alsa-utils ffmpeg python3 python3-pip curl && \
-    pip3 install --break-system-packages yt-dlp && \
+    pip3 install --break-system-packages --retries 5 yt-dlp && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-COPY package.json package-lock.json* ./
-RUN npm install
+COPY package.json package-lock.json ./
+RUN npm ci
 COPY . .
 
 EXPOSE 4000
