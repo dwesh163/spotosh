@@ -55,7 +55,7 @@ export const HomePanel = () => {
             const res = await fetch(url);
             const tracks: Track[] = await res.json();
             await Promise.all(
-                tracks.slice(0, 8).map((track) =>
+                tracks.map((track) =>
                     addToQueue({
                         trackId: track.trackId,
                         title: track.trackName,
