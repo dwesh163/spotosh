@@ -33,7 +33,7 @@ const toTrack = (t: DeezerTrack): Track => ({
 
 export const searchTracks = async (q: string): Promise<Track[]> => {
     try {
-        const data = (await deezer("/search", { q, limit: "20" })) as {
+        const data = (await deezer("/search", { q, limit: "20", order: "RANKING" })) as {
             data?: DeezerTrack[];
             error?: { message: string };
         };
@@ -44,6 +44,23 @@ export const searchTracks = async (q: string): Promise<Track[]> => {
         return (data?.data ?? []).slice(0, 12).map(toTrack);
     } catch (e) {
         console.error("[deezer] searchTracks threw:", e);
+        return [];
+    }
+};
+
+export const getGenreChartTracks = async (genreId: number): Promise<Track[]> => {
+    try {
+        const data = (await deezer(`/chart/${genreId}/tracks`, { limit: "25" })) as {
+            data?: DeezerTrack[];
+            error?: { message: string };
+        };
+        if (data?.error) {
+            console.error("[deezer] getGenreChartTracks error:", data.error.message);
+            return [];
+        }
+        return (data?.data ?? []).map(toTrack);
+    } catch (e) {
+        console.error("[deezer] getGenreChartTracks threw:", e);
         return [];
     }
 };
