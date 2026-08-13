@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader2, Search, Sparkles, X } from "lucide-react";
+import { Loader2, RefreshCw, Search, Sparkles, X } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { GenreChips } from "@/components/queue/genres";
 import { QueueList } from "@/components/queue/list";
@@ -18,11 +18,12 @@ export const HomePanel = () => {
         useSearch();
     const [history, setHistory] = useState<HistoryItem[]>([]);
 
-    const { recommendations, recsLoading, removeRecommendation } = useRecommendations({
+    const { recommendations, recsLoading, removeRecommendation, refresh, canRefresh } = useRecommendations({
         history,
         queue: state.queue,
         nowPlaying: state.nowPlaying,
     });
+    const [genreLoadingId, setGenreLoadingId] = useState<number | null>(null);
 
     useEffect(() => {
         getHistory()
@@ -48,6 +49,9 @@ export const HomePanel = () => {
     const handleRemoveFromQueue = useCallback((id: string) => removeFromQueue(id), []);
 
     const addGenreToQueue = useCallback(async (preset: { genreId?: number; playlistId?: number }) => {
+        const id = preset.genreId ?? preset.playlistId;
+        if (id == null || genreLoadingId != null) return;
+        setGenreLoadingId(id);
         try {
             const url = preset.genreId != null
                 ? `/api/genre?id=${preset.genreId}`
@@ -68,8 +72,10 @@ export const HomePanel = () => {
             );
         } catch {
             /* silent */
+        } finally {
+            setGenreLoadingId(null);
         }
-    }, []);
+    }, [genreLoadingId]);
 
     return (
         <div className="flex-1 flex flex-col overflow-hidden">
@@ -112,10 +118,10 @@ export const HomePanel = () => {
             </div>
 
             <div className="flex-1 overflow-y-auto px-6 py-3.5">
-                <GenreChips onSelect={(preset) => addGenreToQueue(preset)} />
+                <GenreChips onSelect={(preset) => addGenreToQueue(preset)} loadingId={genreLoadingId ?? undefined} />
                 <QueueList state={state} onRemoveFromQueue={handleRemoveFromQueue} />
 
-                {(recommendations.length > 0 || recsLoading) && (
+                {(recommendations.length > 0 || recsLoading || canRefresh || history.length > 0) && (
                     <div className="mt-7">
                         <div className="flex items-center gap-2 mb-3 pb-3 border-b border-outline">
                             <Sparkles size={13} className="text-muted" />
@@ -123,17 +129,28 @@ export const HomePanel = () => {
                                 Recommended
                             </span>
                             {recsLoading && <Loader2 size={11} className="animate-spin-slow text-muted ml-1" />}
+                            <button
+                                type="button"
+                                onClick={refresh}
+                                disabled={!canRefresh || recsLoading}
+                                title="Refresh recommendations from Up Next"
+                                className="ml-auto w-[26px] h-[26px] flex items-center justify-center rounded-full text-muted hover:bg-white/10 hover:text-foreground transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+                            >
+                                <RefreshCw size={13} className={recsLoading ? "animate-spin-slow" : ""} />
+                            </button>
                         </div>
-                        <div className="flex flex-col gap-px">
-                            {recommendations.map((track) => (
-                                <TrackRow
-                                    key={track.trackId}
-                                    track={track}
-                                    onAdd={handleAdd}
-                                    onRemove={removeRecommendation}
-                                />
-                            ))}
-                        </div>
+                        {recommendations.length > 0 && (
+                            <div className="flex flex-col gap-px">
+                                {recommendations.map((track) => (
+                                    <TrackRow
+                                        key={track.trackId}
+                                        track={track}
+                                        onAdd={handleAdd}
+                                        onRemove={removeRecommendation}
+                                    />
+                                ))}
+                            </div>
+                        )}
                     </div>
                 )}
             </div>
