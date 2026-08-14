@@ -25,6 +25,7 @@ export const PlayerControls = ({
       <SkipBack size={20} />
     </Button>
     <button
+      type="button"
       onClick={onTogglePlay}
       disabled={!nowPlaying}
       className={cn(

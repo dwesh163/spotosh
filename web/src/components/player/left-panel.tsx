@@ -1,13 +1,13 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import { useControls } from "@/hooks/use-controls";
+import { usePlayer } from "@/hooks/use-player";
 import { Artwork } from "./artwork";
 import { PlayerControls } from "./controls";
 import { Progress } from "./progress";
 import { TrackInfo } from "./track-info";
 import { VolumeControl } from "./volume";
-import { useControls } from "@/hooks/use-controls";
-import { usePlayer } from "@/hooks/use-player";
 
 export const LeftPanel = () => {
   const state = usePlayer();
@@ -37,10 +37,8 @@ export const LeftPanel = () => {
   }, [muted, sendControl, state.volume]);
 
   const handleSeek = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
+    (ratio: number) => {
       if (!state.nowPlaying) return;
-      const rect = e.currentTarget.getBoundingClientRect();
-      const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
       sendControl({ action: "seek", value: ratio * (state.nowPlaying.durationMs / 1000) });
     },
     [sendControl, state.nowPlaying]
