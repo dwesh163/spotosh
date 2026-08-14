@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { addToQueue } from "@/services/music";
-import type { HistoryItem, Track, QueueItem } from "@/types/music";
+import type { HistoryItem, QueueItem, Track } from "@/types/music";
 
 type UseRecommendationsParams = {
   history: HistoryItem[];
@@ -19,7 +19,9 @@ const RECENT_HISTORY_WINDOW_MS = 5 * 60 * 60 * 1000;
 const fetchSimilar = async (seeds: Seed[]): Promise<Track[]> => {
   const results = await Promise.all(
     seeds.map((s) =>
-      fetch(`/api/similar?artist=${encodeURIComponent(s.artist)}&track=${encodeURIComponent(s.title)}`)
+      fetch(
+        `/api/similar?artist=${encodeURIComponent(s.artist)}&track=${encodeURIComponent(s.title)}`
+      )
         .then((r) => r.json() as Promise<Track[]>)
         .catch(() => [] as Track[])
     )
@@ -44,6 +46,7 @@ export const useRecommendations = ({ history, queue, nowPlaying }: UseRecommenda
   const autoFilledRef = useRef(false);
   const requestIdRef = useRef(0);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: only refetch when the most recent history entry changes, not on every history mutation
   useEffect(() => {
     if (history.length === 0) return;
     const requestId = ++requestIdRef.current;
@@ -93,6 +96,7 @@ export const useRecommendations = ({ history, queue, nowPlaying }: UseRecommenda
     [recommendations, excludedIds]
   );
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: reset the auto-fill guard whenever the recommendation list itself changes
   useEffect(() => {
     autoFilledRef.current = false;
   }, [visibleRecommendations]);
@@ -100,9 +104,9 @@ export const useRecommendations = ({ history, queue, nowPlaying }: UseRecommenda
   useEffect(() => {
     if (autoFilledRef.current) return;
     if (visibleRecommendations.length === 0) return;
-    if (queue.length > 0 || nowPlaying) return;
+    if (queue.length > 0 || nowPlaying?.id != null) return;
     autoFilledRef.current = true;
-    visibleRecommendations.slice(0, 5).forEach((track) =>
+    visibleRecommendations.slice(0, 5).forEach((track) => {
       addToQueue({
         trackId: track.trackId,
         title: track.trackName,
@@ -110,13 +114,12 @@ export const useRecommendations = ({ history, queue, nowPlaying }: UseRecommenda
         album: track.collectionName ?? "",
         artwork: track.artworkUrl100 ?? "",
         durationMs: track.trackTimeMillis ?? 0,
-      })
-    );
+      });
+    });
   }, [queue.length, nowPlaying?.id, visibleRecommendations]);
 
   const removeRecommendation = useCallback(
-    (track: Track) =>
-      setRecommendations((prev) => prev.filter((r) => r.trackId !== track.trackId)),
+    (track: Track) => setRecommendations((prev) => prev.filter((r) => r.trackId !== track.trackId)),
     []
   );
 
