@@ -1,7 +1,7 @@
 "use client";
 
-import { Fragment } from "react";
 import Link from "next/link";
+import { Fragment } from "react";
 import type { QueueItem } from "@/types/music";
 
 type TrackInfoProps = {

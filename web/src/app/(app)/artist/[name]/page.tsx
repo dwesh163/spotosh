@@ -1,7 +1,7 @@
 import { ArrowLeft, Music2 } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { TrackList } from "@/components/detail/track-list";
+import { Button } from "@/components/ui/button";
 import { getArtistTracks } from "@/services/deezer";
 
 type Props = { params: Promise<{ name: string }> };

@@ -1,8 +1,8 @@
+import { Disc3, History, LogOut } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { Disc3, History, LogOut } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { LeftPanel } from "@/components/player/left-panel";
+import { Button } from "@/components/ui/button";
 import { auth, signOut } from "@/services/auth";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {

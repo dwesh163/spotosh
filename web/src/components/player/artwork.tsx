@@ -1,6 +1,6 @@
+import { Disc3 } from "lucide-react";
 import Image from "next/image";
 import { Fragment } from "react";
-import { Disc3 } from "lucide-react";
 import { bigArt } from "@/lib/utils";
 import type { QueueItem } from "@/types/music";
 

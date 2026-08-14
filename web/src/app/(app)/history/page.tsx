@@ -1,7 +1,7 @@
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { HistoryList } from "@/components/history/list";
+import { Button } from "@/components/ui/button";
 import { getHistory } from "@/services/music";
 
 export default async function HistoryPage() {
