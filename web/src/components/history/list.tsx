@@ -1,9 +1,9 @@
 "use client";
 
+import { Clock, Plus, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { Fragment, useCallback, useState } from "react";
-import { Clock, Plus, Trash2 } from "lucide-react";
-import { fmtTime, timeAgo } from "@/lib/utils";
+import { timeAgo } from "@/lib/utils";
 import { addToQueue, removeFromHistory } from "@/services/music";
 import type { HistoryItem } from "@/types/music";
 

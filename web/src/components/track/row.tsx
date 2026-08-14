@@ -1,8 +1,9 @@
 "use client";
 
-import { Fragment, useState } from "react";
-import Link from "next/link";
 import { Check, Plus, Trash2 } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { Fragment, useState } from "react";
 import { fmtTime } from "@/lib/utils";
 import type { Track } from "@/types/music";
 
@@ -24,9 +25,11 @@ export const TrackRow = ({ track, onAdd, onRemove }: TrackRowProps) => {
 
   return (
     <div className="q-row group flex items-center gap-3 p-[9px_10px] rounded-[11px]">
-      <img
+      <Image
         src={track.artworkUrl100}
         alt={track.collectionName || track.trackName}
+        width={40}
+        height={40}
         className="w-10 h-10 rounded-lg object-cover shrink-0"
       />
       <div className="flex-1 min-w-0">
@@ -73,10 +76,11 @@ export const TrackRow = ({ track, onAdd, onRemove }: TrackRowProps) => {
             background: added ? "rgba(181,255,71,0.25)" : "rgba(181,255,71,0.12)",
           }}
         >
-          {added
-            ? <Check size={11} color="var(--color-accent)" />
-            : <Plus size={12} color="var(--color-accent)" />
-          }
+          {added ? (
+            <Check size={11} color="var(--color-accent)" />
+          ) : (
+            <Plus size={12} color="var(--color-accent)" />
+          )}
         </button>
       </div>
     </div>

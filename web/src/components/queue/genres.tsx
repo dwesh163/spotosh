@@ -18,6 +18,7 @@ export const GenreChips = ({ onSelect, loadingId }: GenreChipsProps) => (
         return (
           <button
             key={id}
+            type="button"
             onClick={() => onSelect(preset)}
             disabled={loadingId != null}
             className="px-3.5 py-1.5 rounded-full border border-outline bg-card text-foreground text-xs font-semibold font-display cursor-pointer whitespace-nowrap hover:bg-muted-2 transition-colors disabled:cursor-not-allowed disabled:opacity-50 flex items-center gap-1.5"

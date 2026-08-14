@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
-import { Fragment, useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import { Clock, GripVertical, ListMusic, X } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { fmtTime } from "@/lib/utils";
 import { reorderQueue } from "@/services/music";
@@ -85,6 +85,7 @@ export const QueueList = ({ state, onRemoveFromQueue }: QueueListProps) => {
 
       <div className="flex flex-col gap-px">
         {items.map((item, i) => (
+          // biome-ignore lint/a11y/noStaticElementInteractions: native HTML5 drag-and-drop reordering has no interactive-role equivalent
           <div
             key={item.id}
             draggable
